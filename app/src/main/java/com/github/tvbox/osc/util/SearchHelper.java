@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class SearchHelper {
 
     public static HashMap<String, String> getSourcesForSearch() {
-        String api = Hawk.get(HawkConfig.API_URL, "");
+        String api = Hawk.get(HawkConfig.API_URL, HawkConfig.DEFAULT_API);
         if (api.isEmpty()) {
             return null;
         }
@@ -35,7 +35,7 @@ public class SearchHelper {
     }
 
     public static void putCheckedSources(HashMap<String, String> mCheckSources) {
-        String api = Hawk.get(HawkConfig.API_URL, "");
+        String api = Hawk.get(HawkConfig.API_URL, HawkConfig.DEFAULT_API);
         if (api.isEmpty()) {
             return;
         }
@@ -48,7 +48,7 @@ public class SearchHelper {
     }
 
     public static void putCheckedSource(String siteKey, boolean checked) {
-        String api = Hawk.get(HawkConfig.API_URL, "");
+        String api = Hawk.get(HawkConfig.API_URL, HawkConfig.DEFAULT_API);
         if (api.isEmpty()) {
             return;
         }

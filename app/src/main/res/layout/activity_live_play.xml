@@ -476,6 +476,7 @@
 					android:layout_height="@dimen/vs_60"
 					android:layout_gravity="center"
 					android:src="@drawable/app_banner"
+					android:visibility="gone"
 					android:scaleType="centerInside" />
 
 			</FrameLayout>
@@ -723,21 +724,27 @@
 		android:minWidth="270px">
 		<ImageView
 			android:id="@+id/iv_circle_bg"
-			android:layout_width="@dimen/vs_40"
-			android:layout_height="@dimen/vs_40"
+			android:layout_width="@dimen/vs_64"
+			android:layout_height="@dimen/vs_64"
 			android:layout_marginRight="@dimen/vs_10"
-			android:src="@drawable/app_icon"
+			android:src="@drawable/logo"
 			android:layout_alignParentTop="true"
 			android:layout_alignParentRight="true"
 			android:layout_alignParentBottom="true" />
+
 		<ImageView
 			android:layout_width="@dimen/vs_40"
 			android:layout_height="@dimen/vs_40"
-			android:layout_margin="@dimen/vs_10"
 			android:layout_alignLeft="@+id/iv_circle_bg"
 			android:layout_alignTop="@+id/iv_circle_bg"
 			android:layout_alignRight="@+id/iv_circle_bg"
-			android:layout_alignBottom="@+id/iv_circle_bg" />
+			android:layout_alignBottom="@+id/iv_circle_bg"
+			android:layout_marginStart="@dimen/vs_10"
+			android:layout_marginLeft="@dimen/vs_10"
+			android:layout_marginTop="@dimen/vs_10"
+			android:layout_marginEnd="@dimen/vs_10"
+			android:layout_marginRight="@dimen/vs_10"
+			android:layout_marginBottom="@dimen/vs_10" />
 
 		<com.github.tvbox.osc.ui.tv.widget.MarqueeTextView
 			android:id="@+id/tv_right_top_channel_name"

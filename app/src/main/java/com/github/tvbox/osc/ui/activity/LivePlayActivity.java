@@ -57,7 +57,9 @@ import com.github.tvbox.osc.util.urlhttp.CallBackUtil;
 import com.github.tvbox.osc.util.urlhttp.UrlHttpUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+
 import org.apache.commons.lang3.StringUtils;
+
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.Response;
@@ -110,7 +112,7 @@ public class LivePlayActivity extends BaseActivity {
     private LiveSettingItemAdapter liveSettingItemAdapter;
     private List<LiveSettingGroup> liveSettingGroupList = new ArrayList<>();
 
-    public static  int currentChannelGroupIndex = 0;
+    public static int currentChannelGroupIndex = 0;
     private Handler mHandler = new Handler();
 
     private List<LiveChannelGroup> liveChannelGroupList = new ArrayList<>();
@@ -120,8 +122,8 @@ public class LivePlayActivity extends BaseActivity {
     private LivePlayerManager livePlayerManager = new LivePlayerManager();
     private ArrayList<Integer> channelGroupPasswordConfirmed = new ArrayList<>();
 
-//EPG   by 龍
-    private static LiveChannelItem  channel_Name = null;
+    //EPG   by 龍
+    private static LiveChannelItem channel_Name = null;
     private static Hashtable hsEpg = new Hashtable();
     private CountDownTimer countDownTimer;
     private CountDownTimer countDownTimerRightTop;
@@ -135,7 +137,7 @@ public class LivePlayActivity extends BaseActivity {
     TextView tv_channelnum;
     TextView tip_chname;
     TextView tip_epg1;
-    TextView  tip_epg2;
+    TextView tip_epg2;
     TextView tv_srcinfo;
     TextView tv_curepg_left;
     TextView tv_nextepg_left;
@@ -145,12 +147,12 @@ public class LivePlayActivity extends BaseActivity {
     private TextView tv_right_top_epg_name;
     private TextView tv_right_top_type;
     private ImageView iv_circle_bg;
-    private TextView tv_shownum ;
-    private TextView txtNoEpg ;
+    private TextView tv_shownum;
+    private TextView txtNoEpg;
     private ImageView iv_back_bg;
 
     private ObjectAnimator objectAnimator;
-    public String epgStringAddress ="";
+    public String epgStringAddress = "";
 
     private TvRecyclerView mEpgDateGridView;
     private TvRecyclerView mRightEpgList;
@@ -185,7 +187,7 @@ public class LivePlayActivity extends BaseActivity {
     private SeekBar sBar;
     private View iv_playpause;
     private View iv_play;
-    private  boolean show = false;
+    private boolean show = false;
 
     @Override
     protected int getLayoutResID() {
@@ -195,8 +197,8 @@ public class LivePlayActivity extends BaseActivity {
     @Override
     protected void init() {
         context = this;
-        epgStringAddress = Hawk.get(HawkConfig.EPG_URL,"");
-        if(epgStringAddress == null || epgStringAddress.length()<5)
+        epgStringAddress = Hawk.get(HawkConfig.EPG_URL, "");
+        if (epgStringAddress == null || epgStringAddress.length() < 5)
             epgStringAddress = "http://epg.51zmt.top:8000/api/diyp/";
 
         setLoadSir(findViewById(R.id.live_root));
@@ -213,21 +215,21 @@ public class LivePlayActivity extends BaseActivity {
         tvNetSpeed = findViewById(R.id.tvNetSpeed);
 
         //EPG  findViewById  by 龍
-        tip_chname = (TextView)  findViewById(R.id.tv_channel_bar_name);//底部名称
+        tip_chname = (TextView) findViewById(R.id.tv_channel_bar_name);//底部名称
         tv_channelnum = (TextView) findViewById(R.id.tv_channel_bottom_number); //底部数字
         tip_epg1 = (TextView) findViewById(R.id.tv_current_program_time);//底部EPG当前节目信息
         tip_epg2 = (TextView) findViewById(R.id.tv_next_program_time);//底部EPG当下个节目信息
         tv_srcinfo = (TextView) findViewById(R.id.tv_source);//线路状态
         tv_curepg_left = (TextView) findViewById(R.id.tv_current_program);//当前节目
-        tv_nextepg_left= (TextView) findViewById(R.id.tv_current_program);//下一节目
+        tv_nextepg_left = (TextView) findViewById(R.id.tv_current_program);//下一节目
         ll_epg = (RelativeLayout) findViewById(R.id.ll_epg);
-        tv_right_top_tipnetspeed = (TextView)findViewById(R.id.tv_right_top_tipnetspeed);
-        tv_right_top_channel_name = (TextView)findViewById(R.id.tv_right_top_channel_name);
-        tv_right_top_epg_name = (TextView)findViewById(R.id.tv_right_top_epg_name);
-        tv_right_top_type = (TextView)findViewById(R.id.tv_right_top_type);
+        tv_right_top_tipnetspeed = (TextView) findViewById(R.id.tv_right_top_tipnetspeed);
+        tv_right_top_channel_name = (TextView) findViewById(R.id.tv_right_top_channel_name);
+        tv_right_top_epg_name = (TextView) findViewById(R.id.tv_right_top_epg_name);
+        tv_right_top_type = (TextView) findViewById(R.id.tv_right_top_type);
         iv_circle_bg = (ImageView) findViewById(R.id.iv_circle_bg);
         iv_back_bg = (ImageView) findViewById(R.id.iv_back_bg);
-        tv_tiploading= (View) findViewById(R.id.ll_right_top_loading);
+        tv_tiploading = (View) findViewById(R.id.ll_right_top_loading);
         tv_shownum = (TextView) findViewById(R.id.tv_shownum);
         txtNoEpg = (TextView) findViewById(R.id.txtNoEpg);
         ll_right_top_loading = findViewById(R.id.ll_right_top_loading);
@@ -236,7 +238,7 @@ public class LivePlayActivity extends BaseActivity {
         divLoadEpgleft = (View) findViewById(R.id.divLoadEpgleft);
         divEpg = (LinearLayout) findViewById(R.id.divEPG);
         //右上角图片旋转
-        objectAnimator = ObjectAnimator.ofFloat(iv_circle_bg,"rotation", 360.0f);
+        objectAnimator = ObjectAnimator.ofFloat(iv_circle_bg, "rotation", 360.0f);
         objectAnimator.setDuration(5000);
         objectAnimator.setRepeatCount(-1);
         objectAnimator.start();
@@ -244,8 +246,8 @@ public class LivePlayActivity extends BaseActivity {
         //laodao 7day replay
         mEpgDateGridView = findViewById(R.id.mEpgDateGridView);
         Hawk.put(HawkConfig.NOW_DATE, formatDate.format(new Date()));
-        day=formatDate.format(new Date());
-        nowday=new Date();
+        day = formatDate.format(new Date());
+        nowday = new Date();
 
         mRightEpgList = (TvRecyclerView) findViewById(R.id.lv_epg);
         //EPG频道名称
@@ -264,41 +266,34 @@ public class LivePlayActivity extends BaseActivity {
         iv_play = findViewById(R.id.iv_play);
 
 
-        if(show){
+        if (show) {
             backcontroller.setVisibility(View.VISIBLE);
             ll_epg.setVisibility(View.GONE);
 
-        }else{
+        } else {
             backcontroller.setVisibility(View.GONE);
             ll_epg.setVisibility(View.VISIBLE);
         }
 
 
-        iv_play.setOnClickListener(new View.OnClickListener() {
+        iv_play.setOnClickListener(arg0 -> {
+            mVideoView.start();
+            iv_play.setVisibility(View.INVISIBLE);
+            countDownTimer.start();
+            iv_playpause.setBackground(ContextCompat.getDrawable(LivePlayActivity.context, R.drawable.vod_pause));
+        });
 
-            @Override
-            public void onClick(View arg0) {
+        iv_playpause.setOnClickListener(arg0 -> {
+            if (mVideoView.isPlaying()) {
+                mVideoView.pause();
+                countDownTimer.cancel();
+                iv_play.setVisibility(View.VISIBLE);
+                iv_playpause.setBackground(ContextCompat.getDrawable(LivePlayActivity.context, R.drawable.icon_play));
+            } else {
                 mVideoView.start();
                 iv_play.setVisibility(View.INVISIBLE);
                 countDownTimer.start();
                 iv_playpause.setBackground(ContextCompat.getDrawable(LivePlayActivity.context, R.drawable.vod_pause));
-            }
-        });
-
-        iv_playpause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                if(mVideoView.isPlaying()){
-                    mVideoView.pause();
-                    countDownTimer.cancel();
-                    iv_play.setVisibility(View.VISIBLE);
-                    iv_playpause.setBackground(ContextCompat.getDrawable(LivePlayActivity.context, R.drawable.icon_play));
-                }else{
-                    mVideoView.start();
-                    iv_play.setVisibility(View.INVISIBLE);
-                    countDownTimer.start();
-                    iv_playpause.setBackground(ContextCompat.getDrawable(LivePlayActivity.context, R.drawable.vod_pause));
-                }
             }
         });
         sBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -319,8 +314,8 @@ public class LivePlayActivity extends BaseActivity {
                 if (!fromuser) {
                     return;
                 }
-                if(fromuser){
-                    if(countDownTimer!=null){
+                if (fromuser) {
+                    if (countDownTimer != null) {
                         mVideoView.seekTo(progress);
                         countDownTimer.cancel();
                         countDownTimer.start();
@@ -336,26 +331,23 @@ public class LivePlayActivity extends BaseActivity {
 
 
         });
-        sBar.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View arg0, int keycode, KeyEvent event) {
-                if(event.getAction()==KeyEvent.ACTION_DOWN){
-                    if(keycode==KeyEvent.KEYCODE_DPAD_CENTER||keycode==KeyEvent.KEYCODE_ENTER){
-                        if(mVideoView.isPlaying()){
-                            mVideoView.pause();
-                            countDownTimer.cancel();
-                            iv_play.setVisibility(View.VISIBLE);
-                            iv_playpause.setBackground(ContextCompat.getDrawable(LivePlayActivity.context, R.drawable.icon_play));
-                        }else{
-                            mVideoView.start();
-                            iv_play.setVisibility(View.INVISIBLE);
-                            countDownTimer.start();
-                            iv_playpause.setBackground(ContextCompat.getDrawable(LivePlayActivity.context, R.drawable.vod_pause));
-                        }
+        sBar.setOnKeyListener((arg0, keycode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (keycode == KeyEvent.KEYCODE_DPAD_CENTER || keycode == KeyEvent.KEYCODE_ENTER) {
+                    if (mVideoView.isPlaying()) {
+                        mVideoView.pause();
+                        countDownTimer.cancel();
+                        iv_play.setVisibility(View.VISIBLE);
+                        iv_playpause.setBackground(ContextCompat.getDrawable(LivePlayActivity.context, R.drawable.icon_play));
+                    } else {
+                        mVideoView.start();
+                        iv_play.setVisibility(View.INVISIBLE);
+                        countDownTimer.start();
+                        iv_playpause.setBackground(ContextCompat.getDrawable(LivePlayActivity.context, R.drawable.vod_pause));
                     }
                 }
-                return false;
             }
+            return false;
         });
         initEpgDateView();
         initEpgListView();
@@ -368,6 +360,7 @@ public class LivePlayActivity extends BaseActivity {
         initLiveChannelList();
         initLiveSettingGroupList();
     }
+
     //获取EPG并存储 // 百川epg  DIYP epg   51zmt epg ------- 自建EPG格式输出格式请参考 51zmt
     private List<Epginfo> epgdata = new ArrayList<>();
 
@@ -391,16 +384,11 @@ public class LivePlayActivity extends BaseActivity {
                 mRightEpgList.setSelection(i);
                 epgListAdapter.setSelectedEpgIndex(i);
                 int finalI = i;
-                mRightEpgList.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRightEpgList.smoothScrollToPosition(finalI);
-                    }
-                });
+                mRightEpgList.post(() -> mRightEpgList.smoothScrollToPosition(finalI));
             }
-        }else {
+        } else {
 
-            Epginfo epgbcinfo = new Epginfo(date,"暂无节目信息", date, "00:00", "23:59",0);
+            Epginfo epgbcinfo = new Epginfo(date, "暂无节目信息", date, "00:00", "23:59", 0);
             arrayList.add(epgbcinfo);
             epgdata = arrayList;
             epgListAdapter.setNewData(epgdata);
@@ -422,7 +410,7 @@ public class LivePlayActivity extends BaseActivity {
         String finalChannelName = channelName;
         epgListAdapter.CanBack(currentLiveChannelItem.getinclude_back());
         //epgListAdapter.updateData(date, new ArrayList<>());
-        UrlHttpUtil.get(epgStringAddress + "?ch="+ URLEncoder.encode(epgTagName) + "&date=" + timeFormat.format(date), new CallBackUtil.CallBackString() {
+        UrlHttpUtil.get(epgStringAddress + "?ch=" + URLEncoder.encode(epgTagName) + "&date=" + timeFormat.format(date), new CallBackUtil.CallBackString() {
             public void onFailure(int i, String str) {
                 showEpg(date, new ArrayList());
                 showBottomEpg();
@@ -439,9 +427,9 @@ public class LivePlayActivity extends BaseActivity {
                         if (jSONArray != null)
                             for (int b = 0; b < jSONArray.length(); b++) {
                                 JSONObject jSONObject = jSONArray.getJSONObject(b);
-                                Epginfo epgbcinfo = new Epginfo(date,jSONObject.optString("title"), date, jSONObject.optString("start"), jSONObject.optString("end"),b);
+                                Epginfo epgbcinfo = new Epginfo(date, jSONObject.optString("title"), date, jSONObject.optString("start"), jSONObject.optString("end"), b);
                                 arrayList.add(epgbcinfo);
-                                Log.d("EPG信息:", day +"  "+ jSONObject.optString("start") +" - "+jSONObject.optString("end") + "  " +jSONObject.optString("title"));
+                                Log.d("EPG信息:", day + "  " + jSONObject.optString("start") + " - " + jSONObject.optString("end") + "  " + jSONObject.optString("title"));
                             }
                     }
 
@@ -467,7 +455,7 @@ public class LivePlayActivity extends BaseActivity {
             ((TextView) findViewById(R.id.tv_channel_bottom_number)).setText("" + channel_Name.getChannelNum());
             ((TextView) findViewById(R.id.tv_current_program_time)).setText("暂无信息");
             ((TextView) findViewById(R.id.tv_current_program_name)).setText("");
-            ((TextView) findViewById(R.id.tv_next_program_time)).setText("开源测试软件,请勿商用以及播放违法内容");
+            ((TextView) findViewById(R.id.tv_next_program_time)).setText("暂无信息");
             ((TextView) findViewById(R.id.tv_next_program_name)).setText("");
             String savedEpgKey = channel_Name.getChannelName() + "_" + liveEpgDateAdapter.getItem(liveEpgDateAdapter.getSelectedIndex()).getDatePresented();
             if (hsEpg.containsKey(savedEpgKey)) {
@@ -506,6 +494,7 @@ public class LivePlayActivity extends BaseActivity {
             countDownTimer = new CountDownTimer(5000, 1000) {//底部epg隐藏时间设定
                 public void onTick(long j) {
                 }
+
                 public void onFinish() {
                     findViewById(R.id.ll_epg).setVisibility(View.GONE);
                 }
@@ -556,7 +545,7 @@ public class LivePlayActivity extends BaseActivity {
 
 
     //频道列表
-    public  void divLoadEpgRight(View view) {
+    public void divLoadEpgRight(View view) {
 
         mChannelGroupView.setVisibility(View.GONE);
         divEpg.setVisibility(View.VISIBLE);
@@ -567,9 +556,10 @@ public class LivePlayActivity extends BaseActivity {
 
 
     }
+
     //频道列表
-    public  void divLoadEpgLeft(View view) {
-       // mRightEpgList.setVisibility(View.GONE);
+    public void divLoadEpgLeft(View view) {
+        // mRightEpgList.setVisibility(View.GONE);
         mChannelGroupView.setVisibility(View.VISIBLE);
         divEpg.setVisibility(View.GONE);
         divLoadEpgleft.setVisibility(View.GONE);
@@ -585,12 +575,12 @@ public class LivePlayActivity extends BaseActivity {
         } else if (tvRightSettingLayout.getVisibility() == View.VISIBLE) {
             mHandler.removeCallbacks(mHideSettingLayoutRun);
             mHandler.post(mHideSettingLayoutRun);
-        } else if( backcontroller.getVisibility() == View.VISIBLE){ //
+        } else if (backcontroller.getVisibility() == View.VISIBLE) { //
             backcontroller.setVisibility(View.GONE);
-        }else if(isBack){
-            isBack= false;
+        } else if (isBack) {
+            isBack = false;
             playPreSource();
-        }else {
+        } else {
             mHandler.removeCallbacks(mConnectTimeoutChangeSourceRun);
             mHandler.removeCallbacks(mUpdateNetSpeedRun);
             super.onBackPressed();
@@ -618,16 +608,16 @@ public class LivePlayActivity extends BaseActivity {
                             playNext();
                         break;
                     case KeyEvent.KEYCODE_DPAD_LEFT:
-                        if(isBack){
+                        if (isBack) {
                             showProgressBars(true);
-                        }else{
+                        } else {
                             showSettingGroup();
                         }
                         break;
                     case KeyEvent.KEYCODE_DPAD_RIGHT:
-                        if(isBack){
+                        if (isBack) {
                             showProgressBars(true);
-                        }else{
+                        } else {
                             playNextSource();
                         }
                         break;
@@ -769,7 +759,7 @@ public class LivePlayActivity extends BaseActivity {
     private boolean playChannel(int channelGroupIndex, int liveChannelIndex, boolean changeSource) {
         if ((channelGroupIndex == currentChannelGroupIndex && liveChannelIndex == currentLiveChannelIndex && !changeSource)
                 || (changeSource && currentLiveChannelItem.getSourceNum() == 1)) {
-           // showChannelInfo();
+            // showChannelInfo();
             return true;
         }
         mVideoView.release();
@@ -782,11 +772,11 @@ public class LivePlayActivity extends BaseActivity {
         }
 
         channel_Name = currentLiveChannelItem;
-        isSHIYI=false;
+        isSHIYI = false;
         isBack = false;
-        if(currentLiveChannelItem.getUrl().indexOf("PLTV/8888") !=-1){
+        if (currentLiveChannelItem.getUrl().indexOf("PLTV/8888") != -1) {
             currentLiveChannelItem.setinclude_back(true);
-        }else {
+        } else {
             currentLiveChannelItem.setinclude_back(false);
         }
         showBottomEpg();
@@ -794,7 +784,7 @@ public class LivePlayActivity extends BaseActivity {
         backcontroller.setVisibility(View.GONE);
         ll_right_top_huikan.setVisibility(View.GONE);
         mVideoView.setUrl(currentLiveChannelItem.getUrl());
-       // showChannelInfo();
+        // showChannelInfo();
         mVideoView.start();
         return true;
     }
@@ -934,7 +924,7 @@ public class LivePlayActivity extends BaseActivity {
                 String shiyiStartdate = targetDate + selectedData.originStart.replace(":", "") + "30";
                 String shiyiEnddate = targetDate + selectedData.originEnd.replace(":", "") + "30";
                 Date now = new Date();
-                if(new Date().compareTo(selectedData.startdateTime) < 0){
+                if (new Date().compareTo(selectedData.startdateTime) < 0) {
                     return;
                 }
                 epgListAdapter.setSelectedEpgIndex(position);
@@ -943,14 +933,14 @@ public class LivePlayActivity extends BaseActivity {
                     isSHIYI = false;
                     mVideoView.setUrl(currentLiveChannelItem.getUrl());
                     mVideoView.start();
-                    epgListAdapter.setShiyiSelection(-1, false,timeFormat.format(date));
+                    epgListAdapter.setShiyiSelection(-1, false, timeFormat.format(date));
                     showProgressBars(false);
                     return;
                 }
                 String shiyiUrl = currentLiveChannelItem.getUrl();
                 if (now.compareTo(selectedData.startdateTime) < 0) {
 
-                } else if(shiyiUrl.indexOf("PLTV/8888") !=-1){
+                } else if (shiyiUrl.indexOf("PLTV/8888") != -1) {
 
                     mHandler.removeCallbacks(mHideChannelListRun);
                     mHandler.postDelayed(mHideChannelListRun, 100);
@@ -958,7 +948,7 @@ public class LivePlayActivity extends BaseActivity {
                     shiyi_time = shiyiStartdate + "-" + shiyiEnddate;
                     isSHIYI = true;
                     //mCanSeek=true;
-                    if(shiyiUrl.contains("/PLTV/")){
+                    if (shiyiUrl.contains("/PLTV/")) {
                         if (shiyiUrl.indexOf("?") <= 0) {
                             shiyiUrl = shiyiUrl.replaceAll("/PLTV/", "/TVOD/");
                             shiyiUrl += "?playseek=" + shiyi_time;
@@ -982,15 +972,15 @@ public class LivePlayActivity extends BaseActivity {
                             mRightEpgList.smoothScrollToPosition(position);
                         }
                     });
-                    shiyi_time_c = (int)getTime(formatDate.format(nowday) +" " + selectedData.start + ":" +"30", formatDate.format(nowday) +" " + selectedData.end + ":" +"30");
-                    ViewGroup.LayoutParams lp =  iv_play.getLayoutParams();
-                    lp.width=videoHeight/7;
-                    lp.height=videoHeight/7;
+                    shiyi_time_c = (int) getTime(formatDate.format(nowday) + " " + selectedData.start + ":" + "30", formatDate.format(nowday) + " " + selectedData.end + ":" + "30");
+                    ViewGroup.LayoutParams lp = iv_play.getLayoutParams();
+                    lp.width = videoHeight / 7;
+                    lp.height = videoHeight / 7;
                     sBar = (SeekBar) findViewById(R.id.pb_progressbar);
-                    sBar.setMax(shiyi_time_c*1000);
-                    sBar.setProgress((int)  mVideoView.getCurrentPosition());
-                    tv_currentpos.setText(durationToString((int)mVideoView.getCurrentPosition()));
-                    tv_duration.setText(durationToString(shiyi_time_c*1000));
+                    sBar.setMax(shiyi_time_c * 1000);
+                    sBar.setProgress((int) mVideoView.getCurrentPosition());
+                    tv_currentpos.setText(durationToString((int) mVideoView.getCurrentPosition()));
+                    tv_duration.setText(durationToString(shiyi_time_c * 1000));
                     showProgressBars(true);
                     isBack = true;
                 }
@@ -1010,7 +1000,7 @@ public class LivePlayActivity extends BaseActivity {
                 String shiyiStartdate = targetDate + selectedData.originStart.replace(":", "") + "30";
                 String shiyiEnddate = targetDate + selectedData.originEnd.replace(":", "") + "30";
                 Date now = new Date();
-                if(new Date().compareTo(selectedData.startdateTime) < 0){
+                if (new Date().compareTo(selectedData.startdateTime) < 0) {
                     return;
                 }
                 epgListAdapter.setSelectedEpgIndex(position);
@@ -1019,14 +1009,14 @@ public class LivePlayActivity extends BaseActivity {
                     isSHIYI = false;
                     mVideoView.setUrl(currentLiveChannelItem.getUrl());
                     mVideoView.start();
-                    epgListAdapter.setShiyiSelection(-1, false,timeFormat.format(date));
+                    epgListAdapter.setShiyiSelection(-1, false, timeFormat.format(date));
                     showProgressBars(false);
                     return;
                 }
                 String shiyiUrl = currentLiveChannelItem.getUrl();
                 if (now.compareTo(selectedData.startdateTime) < 0) {
 
-                } else if(shiyiUrl.indexOf("PLTV/8888") !=-1){
+                } else if (shiyiUrl.indexOf("PLTV/8888") != -1) {
                     mHandler.removeCallbacks(mHideChannelListRun);
                     mHandler.postDelayed(mHideChannelListRun, 100);
 
@@ -1034,7 +1024,7 @@ public class LivePlayActivity extends BaseActivity {
                     shiyi_time = shiyiStartdate + "-" + shiyiEnddate;
                     isSHIYI = true;
                     //mCanSeek=true;
-                    if(shiyiUrl.contains("/PLTV/")){
+                    if (shiyiUrl.contains("/PLTV/")) {
                         if (shiyiUrl.indexOf("?") <= 0) {
                             shiyiUrl = shiyiUrl.replaceAll("/PLTV/", "/TVOD/");
                             shiyiUrl += "?playseek=" + shiyi_time;
@@ -1049,7 +1039,7 @@ public class LivePlayActivity extends BaseActivity {
 
                     mVideoView.setUrl(playUrl);
                     mVideoView.start();
-                    epgListAdapter.setShiyiSelection(position, true,timeFormat.format(date));
+                    epgListAdapter.setShiyiSelection(position, true, timeFormat.format(date));
                     epgListAdapter.notifyDataSetChanged();
                     mRightEpgList.setSelectedPosition(position);
                     mRightEpgList.post(new Runnable() {
@@ -1058,29 +1048,30 @@ public class LivePlayActivity extends BaseActivity {
                             mRightEpgList.smoothScrollToPosition(position);
                         }
                     });
-                    shiyi_time_c = (int)getTime(formatDate.format(nowday) +" " + selectedData.start + ":" +"30", formatDate.format(nowday) +" " + selectedData.end + ":" +"30");
-                    ViewGroup.LayoutParams lp =  iv_play.getLayoutParams();
-                    lp.width=videoHeight/7;
-                    lp.height=videoHeight/7;
+                    shiyi_time_c = (int) getTime(formatDate.format(nowday) + " " + selectedData.start + ":" + "30", formatDate.format(nowday) + " " + selectedData.end + ":" + "30");
+                    ViewGroup.LayoutParams lp = iv_play.getLayoutParams();
+                    lp.width = videoHeight / 7;
+                    lp.height = videoHeight / 7;
                     sBar = (SeekBar) findViewById(R.id.pb_progressbar);
-                    sBar.setMax(shiyi_time_c*1000);
-                    sBar.setProgress((int)  mVideoView.getCurrentPosition());
-                   // long dd = mVideoView.getDuration();
-                    tv_currentpos.setText(durationToString((int)mVideoView.getCurrentPosition()));
-                    tv_duration.setText(durationToString(shiyi_time_c*1000));
+                    sBar.setMax(shiyi_time_c * 1000);
+                    sBar.setProgress((int) mVideoView.getCurrentPosition());
+                    // long dd = mVideoView.getDuration();
+                    tv_currentpos.setText(durationToString((int) mVideoView.getCurrentPosition()));
+                    tv_duration.setText(durationToString(shiyi_time_c * 1000));
                     showProgressBars(true);
                     isBack = true;
                 }
             }
         });
     }
+
     //laoda 生成7天回放日期列表数据
     private void initDayList() {
         liveDayList.clear();
         Date firstday = new Date(nowday.getTime() - 6 * 24 * 60 * 60 * 1000);
         for (int i = 0; i < 8; i++) {
             LiveDayListGroup daylist = new LiveDayListGroup();
-            Date newday= new Date(firstday.getTime() + i * 24 * 60 * 60 * 1000);
+            Date newday = new Date(firstday.getTime() + i * 24 * 60 * 60 * 1000);
             String day = formatDate1.format(newday);
             daylist.setGroupIndex(i);
             daylist.setGroupName(day);
@@ -1089,6 +1080,7 @@ public class LivePlayActivity extends BaseActivity {
 
 
     }
+
     //kens 7天回放数据绑定和展示
     private void initEpgDateView() {
         mEpgDateGridView.setHasFixedSize(true);
@@ -1155,7 +1147,6 @@ public class LivePlayActivity extends BaseActivity {
     }
 
 
-
     private void initVideoView() {
         LiveController controller = new LiveController(this);
         controller.setListener(new LiveController.LiveControlListener() {
@@ -1198,9 +1189,9 @@ public class LivePlayActivity extends BaseActivity {
             @Override
             public void changeSource(int direction) {
                 if (direction > 0)
-                    if(isBack){  //手机换源和显示时移控制栏
+                    if (isBack) {  //手机换源和显示时移控制栏
                         showProgressBars(true);
-                    }else{
+                    } else {
                         playNextSource();
                     }
                 else
@@ -1474,7 +1465,7 @@ public class LivePlayActivity extends BaseActivity {
         switch (settingGroupIndex) {
             case 0://线路切换
                 currentLiveChannelItem.setSourceIndex(position);
-                playChannel(currentChannelGroupIndex, currentLiveChannelIndex,true);
+                playChannel(currentChannelGroupIndex, currentLiveChannelIndex, true);
                 break;
             case 1://画面比例
                 livePlayerManager.changeLivePlayerScale(mVideoView, position, currentLiveChannelItem.getChannelName());
@@ -1528,8 +1519,7 @@ public class LivePlayActivity extends BaseActivity {
         if (list.size() == 1 && list.get(0).getGroupName().startsWith("http://127.0.0.1")) {
             showLoading();
             loadProxyLives(list.get(0).getGroupName());
-        }
-        else {
+        } else {
             liveChannelGroupList.clear();
             liveChannelGroupList.addAll(list);
             showSuccess();
@@ -1666,7 +1656,7 @@ public class LivePlayActivity extends BaseActivity {
     private Runnable mUpdateTimeRun = new Runnable() {
         @Override
         public void run() {
-            Date day=new Date();
+            Date day = new Date();
             SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
             tvTime.setText(df.format(day));
             mHandler.postDelayed(this, 1000);
@@ -1687,8 +1677,8 @@ public class LivePlayActivity extends BaseActivity {
         @Override
         public void run() {
             if (mVideoView == null) return;
-            tvNetSpeed.setText(String.format("%.2fMb/s", (float)mVideoView.getTcpSpeed() / 1024.0 / 1024.0));
-            tv_right_top_tipnetspeed.setText(String.format("%.2fKb/s",(float)mVideoView.getTcpSpeed()/1024.0));
+            tvNetSpeed.setText(String.format("%.2fMb/s", (float) mVideoView.getTcpSpeed() / 1024.0 / 1024.0));
+            tv_right_top_tipnetspeed.setText(String.format("%.2fKb/s", (float) mVideoView.getTcpSpeed() / 1024.0));
             mHandler.postDelayed(this, 1000);
         }
     };
@@ -1729,8 +1719,7 @@ public class LivePlayActivity extends BaseActivity {
             if (currentLiveChannelIndex > -1)
                 mLiveChannelView.scrollToPosition(currentLiveChannelIndex);
             liveChannelItemAdapter.setSelectedChannelIndex(currentLiveChannelIndex);
-        }
-        else {
+        } else {
             mLiveChannelView.scrollToPosition(0);
             liveChannelItemAdapter.setSelectedChannelIndex(-1);
         }
@@ -1819,7 +1808,7 @@ public class LivePlayActivity extends BaseActivity {
     }
 
     //计算两个时间相差的秒数
-    public static long getTime(String startTime, String endTime)  {
+    public static long getTime(String startTime, String endTime) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         long eTime = 0;
         try {
@@ -1836,27 +1825,28 @@ public class LivePlayActivity extends BaseActivity {
         long diff = (eTime - sTime) / 1000;
         return diff;
     }
-    private  String durationToString(int duration) {
+
+    private String durationToString(int duration) {
         String result = "";
         int dur = duration / 1000;
-        int hour=dur/3600;
+        int hour = dur / 3600;
         int min = (dur / 60) % 60;
         int sec = dur % 60;
-        if(hour>0){
+        if (hour > 0) {
             if (min > 9) {
                 if (sec > 9) {
-                    result =hour+":"+ min + ":" + sec;
+                    result = hour + ":" + min + ":" + sec;
                 } else {
-                    result =hour+":"+ min + ":0" + sec;
+                    result = hour + ":" + min + ":0" + sec;
                 }
             } else {
                 if (sec > 9) {
-                    result =hour+":"+ "0" + min + ":" + sec;
+                    result = hour + ":" + "0" + min + ":" + sec;
                 } else {
-                    result = hour+":"+"0" + min + ":0" + sec;
+                    result = hour + ":" + "0" + min + ":0" + sec;
                 }
             }
-        }else{
+        } else {
             if (min > 9) {
                 if (sec > 9) {
                     result = min + ":" + sec;
@@ -1865,7 +1855,7 @@ public class LivePlayActivity extends BaseActivity {
                 }
             } else {
                 if (sec > 9) {
-                    result ="0" + min + ":" + sec;
+                    result = "0" + min + ":" + sec;
                 } else {
                     result = "0" + min + ":0" + sec;
                 }
@@ -1873,18 +1863,18 @@ public class LivePlayActivity extends BaseActivity {
         }
         return result;
     }
-    public void showProgressBars( boolean show){
+
+    public void showProgressBars(boolean show) {
 
         sBar.requestFocus();
-        if(show){
+        if (show) {
             backcontroller.setVisibility(View.VISIBLE);
             ll_epg.setVisibility(View.GONE);
 
-        }else{
+        } else {
             backcontroller.setVisibility(View.GONE);
             ll_epg.setVisibility(View.VISIBLE);
         }
-
 
 
         iv_play.setOnClickListener(new View.OnClickListener() {
@@ -1901,12 +1891,12 @@ public class LivePlayActivity extends BaseActivity {
         iv_playpause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                if(mVideoView.isPlaying()){
+                if (mVideoView.isPlaying()) {
                     mVideoView.pause();
                     countDownTimer.cancel();
                     iv_play.setVisibility(View.VISIBLE);
                     iv_playpause.setBackground(ContextCompat.getDrawable(LivePlayActivity.context, R.drawable.icon_play));
-                }else{
+                } else {
                     mVideoView.start();
                     iv_play.setVisibility(View.INVISIBLE);
                     countDownTimer.start();
@@ -1929,8 +1919,8 @@ public class LivePlayActivity extends BaseActivity {
 
             @Override
             public void onProgressChanged(SeekBar sb, int progress, boolean fromuser) {
-                if(fromuser){
-                    if(countDownTimer!=null){
+                if (fromuser) {
+                    if (countDownTimer != null) {
                         mVideoView.seekTo(progress);
                         countDownTimer.cancel();
                         countDownTimer.start();
@@ -1941,14 +1931,14 @@ public class LivePlayActivity extends BaseActivity {
         sBar.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View arg0, int keycode, KeyEvent event) {
-                if(event.getAction()==KeyEvent.ACTION_DOWN){
-                    if(keycode==KeyEvent.KEYCODE_DPAD_CENTER||keycode==KeyEvent.KEYCODE_ENTER){
-                        if(mVideoView.isPlaying()){
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (keycode == KeyEvent.KEYCODE_DPAD_CENTER || keycode == KeyEvent.KEYCODE_ENTER) {
+                        if (mVideoView.isPlaying()) {
                             mVideoView.pause();
                             countDownTimer.cancel();
                             iv_play.setVisibility(View.VISIBLE);
                             iv_playpause.setBackground(ContextCompat.getDrawable(LivePlayActivity.context, R.drawable.icon_play));
-                        }else{
+                        } else {
                             mVideoView.start();
                             iv_play.setVisibility(View.INVISIBLE);
                             countDownTimer.start();
@@ -1959,20 +1949,20 @@ public class LivePlayActivity extends BaseActivity {
                 return false;
             }
         });
-        if(mVideoView.isPlaying()){
+        if (mVideoView.isPlaying()) {
             iv_play.setVisibility(View.INVISIBLE);
             iv_playpause.setBackground(ContextCompat.getDrawable(LivePlayActivity.context, R.drawable.vod_pause));
-        }else{
+        } else {
             iv_play.setVisibility(View.VISIBLE);
             iv_playpause.setBackground(ContextCompat.getDrawable(LivePlayActivity.context, R.drawable.icon_play));
         }
-        if(countDownTimer3==null){
+        if (countDownTimer3 == null) {
             countDownTimer3 = new CountDownTimer(36000, 1000) {
 
                 @Override
                 public void onTick(long arg0) {
 
-                    if(mVideoView != null){
+                    if (mVideoView != null) {
                         sBar.setProgress((int) mVideoView.getCurrentPosition());
                         tv_currentpos.setText(durationToString((int) mVideoView.getCurrentPosition()));
                     }
@@ -1981,12 +1971,12 @@ public class LivePlayActivity extends BaseActivity {
 
                 @Override
                 public void onFinish() {
-                    if(backcontroller.getVisibility() == View.VISIBLE){
+                    if (backcontroller.getVisibility() == View.VISIBLE) {
                         backcontroller.setVisibility(View.GONE);
                     }
                 }
             };
-        }else{
+        } else {
             countDownTimer3.cancel();
         }
         countDownTimer3.start();

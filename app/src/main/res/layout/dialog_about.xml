@@ -8,12 +8,33 @@
     android:padding="@dimen/vs_30">
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/vs_20"
+        android:lineSpacingExtra="@dimen/ts_50"
+        android:lineSpacingMultiplier="0"
+        android:text="🐧温馨提示🐧"
+        android:textColor="@color/color_FF0057"
+        android:textSize="@dimen/ts_40"
+        android:textStyle="bold" />
+
+    <TextView
         android:layout_width="@dimen/vs_600"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="@dimen/ts_50"
         android:lineSpacingMultiplier="0"
-        android:text="本软件只提供聚合展示功能，所有资源来自网上, 软件不参与任何制作, 上传, 储存, 下载等内容. 软件仅供学习参考, 请于安装后24小时内删除。\n\n打包分发请保留出处\nhttps://github.com/CatVodTVOfficial/TVBoxOSC\nhttps://github.com/q215613905/TVBoxOS"
+        android:text="      本软件只提供聚合展示功能，所有资源来自网上, 软件不参与任何制作, 上传, 储存, 下载等内容. 软件仅供学习参考, 请于安装后24小时内删除。\n      软件使用中出现的任何Bug或其他有助于改进软件性能的建议均可通过以下联系方式提交，谢谢！！"
         android:textColor="@color/color_CC000000"
         android:textSize="@dimen/ts_24" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vs_20"
+        android:text="🐧Email: samwoo2013@gmail.com"
+        android:textColor="@color/color_CC000000"
+        android:textSize="@dimen/ts_24"
+        android:autoLink="email" />
 
 </LinearLayout>

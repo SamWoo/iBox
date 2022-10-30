@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 
+// add by Sam at 2022/10/27
+def keystorePropertiesFile = rootProject.file("key.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+// end
 android {
     compileSdkVersion 30
 
@@ -18,6 +23,14 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
     }
@@ -28,15 +41,29 @@ android {
             minifyEnabled false
 
             ndk {
-                abiFilters 'armeabi-v7a'
+                abiFilters 'armeabi-v7a'//, 'arm64-v8a', 'armeabi'
             }
         }
         release {
+            // 混淆、压缩
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             minifyEnabled true
 
+            signingConfig signingConfigs.release
             ndk {
-                abiFilters 'armeabi-v7a'
+                abiFilters 'armeabi-v7a'//, 'arm64-v8a', 'armeabi'
+            }
+            // 编译出的apk重命名
+            // 这也是groovy的代码，这里的代码作用是重命名最后打包出来的apk
+            // 根据 def fileName 设置的格式来命名，${}表示的是某个变量的引用
+            android.applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        def fileName = "iBox_v${defaultConfig.versionName}_${releaseTime()}.apk"
+                        outputFileName = fileName
+                    }
+                }
             }
         }
     }
@@ -58,6 +85,10 @@ android {
     }
 }
 
+//格式化打包时间
+static def releaseTime() {
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
+}
 dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
 

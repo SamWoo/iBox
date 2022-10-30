@@ -56,50 +56,44 @@ public class ApiDialog extends BaseDialog {
         tvAddress = findViewById(R.id.tvAddress);
         inputApi = findViewById(R.id.input);
         //内置网络接口在此处添加
-        inputApi.setText(Hawk.get(HawkConfig.API_URL, ""));
-        findViewById(R.id.inputSubmit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String newApi = inputApi.getText().toString().trim();
-                if (!newApi.isEmpty()) {
-                    ArrayList<String> history = Hawk.get(HawkConfig.API_HISTORY, new ArrayList<String>());
-                    if (!history.contains(newApi))
-                        history.add(0, newApi);
-                    if (history.size() > 30)
-                        history.remove(30);
-                    Hawk.put(HawkConfig.API_HISTORY, history);
-                    listener.onchange(newApi);
-                    dismiss();
-                }
+        inputApi.setText(Hawk.get(HawkConfig.API_URL, HawkConfig.DEFAULT_API));
+        findViewById(R.id.inputSubmit).setOnClickListener(v -> {
+            String newApi = inputApi.getText().toString().trim();
+            if (!newApi.isEmpty()) {
+                ArrayList<String> history = Hawk.get(HawkConfig.API_HISTORY, new ArrayList<String>());
+                if (!history.contains(newApi))
+                    history.add(0, newApi);
+                if (history.size() > 30)
+                    history.remove(30);
+                Hawk.put(HawkConfig.API_HISTORY, history);
+                listener.onchange(newApi);
+                dismiss();
             }
         });
-        findViewById(R.id.apiHistory).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<String> history = Hawk.get(HawkConfig.API_HISTORY, new ArrayList<String>());
-                if (history.isEmpty())
-                    return;
-                String current = Hawk.get(HawkConfig.API_URL, "");
-                int idx = 0;
-                if (history.contains(current))
-                    idx = history.indexOf(current);
-                ApiHistoryDialog dialog = new ApiHistoryDialog(getContext());
-                dialog.setTip("历史配置列表");
-                dialog.setAdapter(new ApiHistoryDialogAdapter.SelectDialogInterface() {
-                    @Override
-                    public void click(String value) {
-                        inputApi.setText(value);
-                        listener.onchange(value);
-                        dialog.dismiss();
-                    }
+        findViewById(R.id.apiHistory).setOnClickListener(v -> {
+            ArrayList<String> history = Hawk.get(HawkConfig.API_HISTORY, new ArrayList<String>());
+            if (history.isEmpty())
+                return;
+            String current = Hawk.get(HawkConfig.API_URL, HawkConfig.DEFAULT_API);
+            int idx = 0;
+            if (history.contains(current))
+                idx = history.indexOf(current);
+            ApiHistoryDialog dialog = new ApiHistoryDialog(getContext());
+            dialog.setTip("历史配置列表");
+            dialog.setAdapter(new ApiHistoryDialogAdapter.SelectDialogInterface() {
+                @Override
+                public void click(String value) {
+                    inputApi.setText(value);
+                    listener.onchange(value);
+                    dialog.dismiss();
+                }
 
-                    @Override
-                    public void del(String value, ArrayList<String> data) {
-                        Hawk.put(HawkConfig.API_HISTORY, data);
-                    }
-                }, history, idx);
-                dialog.show();
-            }
+                @Override
+                public void del(String value, ArrayList<String> data) {
+                    Hawk.put(HawkConfig.API_HISTORY, data);
+                }
+            }, history, idx);
+            dialog.show();
         });
         findViewById(R.id.storagePermission).setOnClickListener(new View.OnClickListener() {
             @Override
