@@ -1,0 +1,5 @@
+<resources>
+    <!--  app名称   -->
+    <string name="app_name">iBox</string>
+    <string name="setting">设置</string>
+</resources>
