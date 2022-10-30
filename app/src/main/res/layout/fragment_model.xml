@@ -29,13 +29,18 @@
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/vs_64"
+                    android:layout_width="@dimen/vs_50"
                     android:layout_height="match_parent"
-                    android:src="@drawable/logo" />
+                    android:paddingRight="@dimen/vs_6"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:src="@drawable/setting" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:text="@string/setting"
                     android:textColor="@color/color_FFFFFF"
                     android:textSize="@dimen/ts_30"
@@ -101,6 +106,8 @@
                 <ImageView
                     android:layout_width="@dimen/vs_40"
                     android:layout_height="@dimen/vs_40"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:paddingRight="@dimen/vs_6"
                     android:src="@drawable/data" />
 
@@ -150,6 +157,8 @@
                 <ImageView
                     android:layout_width="@dimen/vs_40"
                     android:layout_height="@dimen/vs_40"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:paddingRight="@dimen/vs_6"
                     android:src="@drawable/address" />
 
@@ -261,6 +270,8 @@
                         <ImageView
                             android:layout_width="@dimen/vs_40"
                             android:layout_height="@dimen/vs_40"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:paddingRight="@dimen/vs_6"
                             android:src="@drawable/recommend" />
 
@@ -364,6 +375,8 @@
                         <ImageView
                             android:layout_width="@dimen/vs_40"
                             android:layout_height="@dimen/vs_40"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:paddingRight="@dimen/vs_6"
                             android:src="@drawable/search" />
 
@@ -409,6 +422,14 @@
                         android:orientation="horizontal"
                         android:paddingLeft="@dimen/vs_20"
                         android:paddingRight="@dimen/vs_20">
+
+                        <ImageView
+                            android:layout_width="@dimen/vs_40"
+                            android:layout_height="@dimen/vs_40"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:paddingRight="@dimen/vs_6"
+                            android:src="@drawable/juhe" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -465,6 +486,8 @@
                     <ImageView
                         android:layout_width="@dimen/vs_40"
                         android:layout_height="@dimen/vs_40"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:paddingRight="@dimen/vs_6"
                         android:src="@drawable/player" />
 
@@ -514,6 +537,8 @@
                     <ImageView
                         android:layout_width="@dimen/vs_35"
                         android:layout_height="@dimen/vs_35"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:paddingRight="@dimen/vs_6"
                         android:src="@drawable/decoder" />
 
@@ -572,6 +597,8 @@
                     <ImageView
                         android:layout_width="@dimen/vs_40"
                         android:layout_height="@dimen/vs_40"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:paddingRight="@dimen/vs_6"
                         android:src="@drawable/render" />
 
@@ -621,6 +648,8 @@
                     <ImageView
                         android:layout_width="@dimen/vs_40"
                         android:layout_height="@dimen/vs_40"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:paddingRight="@dimen/vs_6"
                         android:src="@drawable/safe" />
 
@@ -680,6 +709,8 @@
                     <ImageView
                         android:layout_width="@dimen/vs_40"
                         android:layout_height="@dimen/vs_40"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:paddingRight="@dimen/vs_6"
                         android:src="@drawable/bug" />
 
@@ -737,6 +768,14 @@
                         android:paddingLeft="@dimen/vs_20"
                         android:paddingRight="@dimen/vs_20">
 
+                        <ImageView
+                            android:layout_width="@dimen/vs_40"
+                            android:layout_height="@dimen/vs_40"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:paddingRight="@dimen/vs_6"
+                            android:src="@drawable/nearby" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -779,6 +818,14 @@
                         android:orientation="horizontal"
                         android:paddingLeft="@dimen/vs_20"
                         android:paddingRight="@dimen/vs_20">
+
+                        <ImageView
+                            android:layout_width="@dimen/vs_40"
+                            android:layout_height="@dimen/vs_40"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:paddingRight="@dimen/vs_6"
+                            android:src="@drawable/record" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -842,6 +889,14 @@
                         android:orientation="horizontal"
                         android:paddingLeft="@dimen/vs_20"
                         android:paddingRight="@dimen/vs_20">
+
+                        <ImageView
+                            android:layout_width="@dimen/vs_40"
+                            android:layout_height="@dimen/vs_40"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:paddingRight="@dimen/vs_6"
+                            android:src="@drawable/wallpaper" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -925,6 +980,14 @@
                         android:paddingLeft="@dimen/vs_20"
                         android:paddingRight="@dimen/vs_20">
 
+                        <ImageView
+                            android:layout_width="@dimen/vs_40"
+                            android:layout_height="@dimen/vs_40"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:paddingRight="@dimen/vs_6"
+                            android:src="@drawable/scale" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -967,6 +1030,14 @@
                         android:orientation="horizontal"
                         android:paddingLeft="@dimen/vs_20"
                         android:paddingRight="@dimen/vs_20">
+
+                        <ImageView
+                            android:layout_width="@dimen/vs_40"
+                            android:layout_height="@dimen/vs_40"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:paddingRight="@dimen/vs_6"
+                            android:src="@drawable/see" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -1025,6 +1096,8 @@
                     <ImageView
                         android:layout_width="@dimen/vs_40"
                         android:layout_height="@dimen/vs_40"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:paddingRight="@dimen/vs_6"
                         android:src="@drawable/backup" />
 
@@ -1067,6 +1140,8 @@
                     <ImageView
                         android:layout_width="@dimen/vs_40"
                         android:layout_height="@dimen/vs_40"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:paddingRight="@dimen/vs_6"
                         android:src="@drawable/warn" />
 
