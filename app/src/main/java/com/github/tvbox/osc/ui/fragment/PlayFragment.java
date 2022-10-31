@@ -240,6 +240,7 @@ public class PlayFragment extends BaseLazyFragment {
         videoDuration = mVideoView.getMediaPlayer().getDuration();
         if (videoDuration == 0) {
             mController.mPlayerSpeedBtn.setVisibility(View.GONE);
+//            mController.mPlayerSpeedTxt.setVisibility(View.GONE);
             mController.mPlayerTimeStartEndText.setVisibility(View.GONE);
             mController.mPlayerTimeStartBtn.setVisibility(View.GONE);
             mController.mPlayerTimeSkipBtn.setVisibility(View.GONE);
@@ -247,6 +248,7 @@ public class PlayFragment extends BaseLazyFragment {
             mController.mPlayerTimeResetBtn.setVisibility(View.GONE);
         }else {
             mController.mPlayerSpeedBtn.setVisibility(View.VISIBLE);
+//            mController.mPlayerSpeedTxt.setVisibility(View.VISIBLE);
             mController.mPlayerTimeStartEndText.setVisibility(View.VISIBLE);
             mController.mPlayerTimeStartBtn.setVisibility(View.VISIBLE);
             mController.mPlayerTimeSkipBtn.setVisibility(View.VISIBLE);
