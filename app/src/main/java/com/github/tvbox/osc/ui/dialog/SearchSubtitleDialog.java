@@ -69,42 +69,33 @@ public class SearchSubtitleDialog extends BaseDialog {
         mGridView.setHasFixedSize(true);
         mGridView.setLayoutManager(new V7LinearLayoutManager(getContext(), 1, false));
         mGridView.setAdapter(searchAdapter);
-        searchAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                FastClickCheckUtil.check(view);
-                Subtitle subtitle = searchAdapter.getData().get(position);
-                //加载字幕
-                if (mSubtitleLoader != null) {
-                    if (subtitle.getIsZip()) {
-                        isSearchPag = false;
-                        loadingBar.setVisibility(View.VISIBLE);
-                        mGridView.setVisibility(View.GONE);
-                        subtitleViewModel.getSearchResultSubtitleUrls(subtitle);
-                    } else {
-                        loadSubtitle(subtitle);
-                        dismiss();
-                    }
+        searchAdapter.setOnItemClickListener((adapter, view, position) -> {
+            FastClickCheckUtil.check(view);
+            Subtitle subtitle = searchAdapter.getData().get(position);
+            //加载字幕
+            if (mSubtitleLoader != null) {
+                if (subtitle.getIsZip()) {
+                    isSearchPag = false;
+                    loadingBar.setVisibility(View.VISIBLE);
+                    mGridView.setVisibility(View.GONE);
+                    subtitleViewModel.getSearchResultSubtitleUrls(subtitle);
+                } else {
+                    loadSubtitle(subtitle);
+                    dismiss();
                 }
             }
         });
 
-        searchAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                if (searchAdapter.getData().get(0).getIsZip()) {
-                    subtitleViewModel.searchResult(searchWord, page);
-                }
+        searchAdapter.setOnLoadMoreListener(() -> {
+            if (searchAdapter.getData().get(0).getIsZip()) {
+                subtitleViewModel.searchResult(searchWord, page);
             }
         }, mGridView);
 
-        subtitleSearchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FastClickCheckUtil.check(v);
-                String wd = subtitleSearchEt.getText().toString().trim();
-                search(wd);
-            }
+        subtitleSearchBtn.setOnClickListener(v -> {
+            FastClickCheckUtil.check(v);
+            String wd = subtitleSearchEt.getText().toString().trim();
+            search(wd);
         });
         searchAdapter.setNewData(new ArrayList<>());
     }
@@ -135,55 +126,52 @@ public class SearchSubtitleDialog extends BaseDialog {
 
     private void initViewModel() {
         subtitleViewModel = new ViewModelProvider((ViewModelStoreOwner) mContext).get(SubtitleViewModel.class);
-        subtitleViewModel.searchResult.observe((LifecycleOwner) mContext, new Observer<SubtitleData>() {
-            @Override
-            public void onChanged(SubtitleData subtitleData) {
-                List<Subtitle> data = subtitleData.getSubtitleList();
-                loadingBar.setVisibility(View.GONE);
-                mGridView.setVisibility(View.VISIBLE);
-                if (data == null) {
-                    mGridView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getContext(), "未查询到匹配字幕", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    return;
-                }
-
-                if (data.size() > 0) {
-                    mGridView.requestFocus();
-                    if (subtitleData.getIsZip()) {
-                        if (subtitleData.getIsNew()) {
-                            searchAdapter.setNewData(data);
-                            zipSubtitles = data;
-                        } else {
-                            searchAdapter.addData(data);
-                            zipSubtitles.addAll(data);
-                        }
-                        page++;
-                        if (page > maxPage) {
-                            searchAdapter.loadMoreEnd();
-                            searchAdapter.setEnableLoadMore(false);
-                        } else {
-                            searchAdapter.loadMoreComplete();
-                            searchAdapter.setEnableLoadMore(true);
-                        }
-                    } else {
-                        searchAdapter.loadMoreComplete();
-                        searchAdapter.setNewData(data);
-                        searchAdapter.setEnableLoadMore(false);
+        subtitleViewModel.searchResult.observe((LifecycleOwner) mContext, subtitleData -> {
+            List<Subtitle> data = subtitleData.getSubtitleList();
+            loadingBar.setVisibility(View.GONE);
+            mGridView.setVisibility(View.VISIBLE);
+            if (data == null) {
+                mGridView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), "未查询到匹配字幕", Toast.LENGTH_SHORT).show();
                     }
-                } else {
+                });
+                return;
+            }
+
+            if (data.size() > 0) {
+                mGridView.requestFocus();
+                if (subtitleData.getIsZip()) {
+                    if (subtitleData.getIsNew()) {
+                        searchAdapter.setNewData(data);
+                        zipSubtitles = data;
+                    } else {
+                        searchAdapter.addData(data);
+                        zipSubtitles.addAll(data);
+                    }
+                    page++;
                     if (page > maxPage) {
                         searchAdapter.loadMoreEnd();
+                        searchAdapter.setEnableLoadMore(false);
                     } else {
                         searchAdapter.loadMoreComplete();
+                        searchAdapter.setEnableLoadMore(true);
                     }
+                } else {
+                    searchAdapter.loadMoreComplete();
+                    searchAdapter.setNewData(data);
                     searchAdapter.setEnableLoadMore(false);
                 }
-
+            } else {
+                if (page > maxPage) {
+                    searchAdapter.loadMoreEnd();
+                } else {
+                    searchAdapter.loadMoreComplete();
+                }
+                searchAdapter.setEnableLoadMore(false);
             }
+
         });
     }
 

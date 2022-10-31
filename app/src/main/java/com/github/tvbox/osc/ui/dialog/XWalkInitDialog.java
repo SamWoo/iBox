@@ -29,12 +29,7 @@ public class XWalkInitDialog extends BaseDialog {
         setCanceledOnTouchOutside(false);
         setCancelable(true);
         setContentView(R.layout.dialog_xwalk);
-        setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                OkGo.getInstance().cancelTag("down_xwalk");
-            }
-        });
+        setOnDismissListener(dialog -> OkGo.getInstance().cancelTag("down_xwalk"));
         TextView downText = findViewById(R.id.downXWalk);
         TextView downTip = findViewById(R.id.downXWalkArch);
 

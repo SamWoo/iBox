@@ -107,42 +107,35 @@ public class VodController extends BaseController {
     TextView mPlayTitle;
     TextView mPlayTitle1;
     TextView mPlayLoadNetSpeedRightTop;
-    //    TextView mNextBtn;
     LinearLayout mNextBtn;
-    //    TextView mPreBtn;
     LinearLayout mPreBtn;
-    //    TextView mPlayerScaleBtn;
     LinearLayout mPlayerScaleBtn;
     TextView mPlayerScaleTxt;
-    //    TextView mPlayerSpeedBtn;
     public LinearLayout mPlayerSpeedBtn;
     TextView mPlayerSpeedTxt;
-    //    TextView mPlayerBtn;
     LinearLayout mPlayerBtn;
     TextView mPlayerTxt;
-    TextView mPlayerIJKBtn;
-    //    TextView mPlayerRetry;
+    LinearLayout mPlayerIJKBtn;
+    TextView mPlayerIJKTxt;
     LinearLayout mPlayerRetry;
-    //    TextView mPlayrefresh;
     LinearLayout mPlayrefresh;
-    public TextView mPlayerTimeStartEndText;
+    public LinearLayout mPlayerTimeStartEndText;
     public TextView mPlayerTimeStartBtn;
     public TextView mPlayerTimeSkipBtn;
     public TextView mPlayerTimeStepBtn;
-    public TextView mPlayerTimeResetBtn;
+    public LinearLayout mPlayerTimeResetBtn;
     TextView mPlayPauseTime;
     TextView mPlayLoadNetSpeed;
     TextView mVideoSize;
     public SimpleSubtitleView mSubtitleView;
-    //    TextView mSubtitleBtn;
     LinearLayout mSubtitleBtn;
-    //    TextView mAudioTrackBtn;
     LinearLayout mAudioTrackBtn;
-    public TextView mLandscapePortraitBtn;
+    public LinearLayout mLandscapePortraitBtn;
+    public TextView mLandscapePortraitTxt;
 
     Handler myHandle;
     Runnable myRunnable;
-    int myHandleSeconds = 6000;//闲置多少毫秒秒关闭底栏  默认6秒
+    int myHandleSeconds = 5000;//闲置多少毫秒秒关闭底栏  默认6秒
 
     private Runnable myRunnable2 = new Runnable() {
         @Override
@@ -190,6 +183,7 @@ public class VodController extends BaseController {
         mPlayerBtn = findViewById(R.id.play_player);
         mPlayerTxt = findViewById(R.id.play_player_txt);
         mPlayerIJKBtn = findViewById(R.id.play_ijk);
+        mPlayerIJKTxt = findViewById(R.id.play_ijk_txt);
         mPlayerTimeStartEndText = findViewById(R.id.play_time_start_end_text);
         mPlayerTimeStartBtn = findViewById(R.id.play_time_start);
         mPlayerTimeSkipBtn = findViewById(R.id.play_time_end);
@@ -202,6 +196,7 @@ public class VodController extends BaseController {
         mSubtitleBtn = findViewById(R.id.subtitle_select);
         mAudioTrackBtn = findViewById(R.id.audio_track_select);
         mLandscapePortraitBtn = findViewById(R.id.landscape_portrait);
+        mLandscapePortraitTxt = findViewById(R.id.landscape_portrait_txt);
 
         initSubtitleInfo();
 
@@ -553,17 +548,17 @@ public class VodController extends BaseController {
         double screenSqrt = ScreenUtils.getSqrt(mActivity);
         if (screenSqrt < 20.0) {
             mLandscapePortraitBtn.setVisibility(View.VISIBLE);
-            mLandscapePortraitBtn.setText("竖屏");
+            mLandscapePortraitTxt.setText("竖屏");
         }
     }
 
     void setLandscapePortrait() {
         int requestedOrientation = mActivity.getRequestedOrientation();
         if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE || requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE || requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
-            mLandscapePortraitBtn.setText("横屏");
+            mLandscapePortraitTxt.setText("横屏");
             mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         } else if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT || requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT || requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT) {
-            mLandscapePortraitBtn.setText("竖屏");
+            mLandscapePortraitTxt.setText("竖屏");
             mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         }
     }
@@ -593,13 +588,10 @@ public class VodController extends BaseController {
         try {
             int playerType = mPlayerConfig.getInt("pl");
             mPlayerTxt.setText(PlayerHelper.getPlayerName(playerType));
-//            mPlayerScaleBtn.setText(PlayerHelper.getScaleName(mPlayerConfig.getInt("sc")));
             mPlayerScaleTxt.setText(PlayerHelper.getScaleName(mPlayerConfig.getInt("sc")));
-            mPlayerIJKBtn.setText(mPlayerConfig.getString("ijk"));
+            mPlayerIJKTxt.setText(mPlayerConfig.getString("ijk"));
             mPlayerIJKBtn.setVisibility(playerType == 1 ? VISIBLE : GONE);
-//            mPlayerScaleBtn.setText(PlayerHelper.getScaleName(mPlayerConfig.getInt("sc")));
             mPlayerScaleTxt.setText(PlayerHelper.getScaleName(mPlayerConfig.getInt("sc")));
-//            mPlayerSpeedBtn.setText("x" + mPlayerConfig.getDouble("sp"));
             mPlayerSpeedTxt.setText("x" + mPlayerConfig.getDouble("sp"));
             mPlayerTimeStartBtn.setText(PlayerUtils.stringForTime(mPlayerConfig.getInt("st") * 1000));
             mPlayerTimeSkipBtn.setText(PlayerUtils.stringForTime(mPlayerConfig.getInt("et") * 1000));

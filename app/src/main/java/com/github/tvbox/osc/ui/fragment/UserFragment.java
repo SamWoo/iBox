@@ -78,12 +78,12 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
 
     @Override
     protected void onFragmentResume() {
-        if(Hawk.get(HawkConfig.HOME_REC_STYLE, false)){
+        if (Hawk.get(HawkConfig.HOME_REC_STYLE, false)) {
             tvHotList1.setVisibility(View.VISIBLE);
             tvHotList2.setVisibility(View.GONE);
             tvHotList1.setHasFixedSize(true);
             tvHotList1.setLayoutManager(new V7GridLayoutManager(this.mContext, 5));
-        }else {
+        } else {
             tvHotList1.setVisibility(View.GONE);
             tvHotList2.setVisibility(View.VISIBLE);
         }
@@ -134,46 +134,40 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
         tvHotList1 = findViewById(R.id.tvHotList1);
         tvHotList2 = findViewById(R.id.tvHotList2);
         homeHotVodAdapter = new HomeHotVodAdapter();
-        homeHotVodAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (ApiConfig.get().getSourceBeanList().isEmpty())
-                    return;
-                Movie.Video vod = ((Movie.Video) adapter.getItem(position));
-                if (vod.id != null && !vod.id.isEmpty()) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("id", vod.id);
-                    bundle.putString("sourceKey", vod.sourceKey);
-                    if(Hawk.get(HawkConfig.HOME_REC, 0)==1 && Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
-                        bundle.putString("title", vod.name);
-                        jumpActivity(FastSearchActivity.class, bundle);
-                    }else {
-                        jumpActivity(DetailActivity.class, bundle);
-                    }
+        homeHotVodAdapter.setOnItemClickListener((adapter, view, position) -> {
+            if (ApiConfig.get().getSourceBeanList().isEmpty())
+                return;
+            Movie.Video vod = ((Movie.Video) adapter.getItem(position));
+            if (vod.id != null && !vod.id.isEmpty()) {
+                Bundle bundle = new Bundle();
+                bundle.putString("id", vod.id);
+                bundle.putString("sourceKey", vod.sourceKey);
+                if (Hawk.get(HawkConfig.HOME_REC, 0) == 1 && Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)) {
+                    bundle.putString("title", vod.name);
+                    jumpActivity(FastSearchActivity.class, bundle);
                 } else {
-                    Intent newIntent;
-                    if(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
-                        newIntent = new Intent(mContext, FastSearchActivity.class);
-                    }else {
-                        newIntent = new Intent(mContext, SearchActivity.class);
-                    }
-                    newIntent.putExtra("title", vod.name);
-                    newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    mActivity.startActivity(newIntent);
+                    jumpActivity(DetailActivity.class, bundle);
                 }
+            } else {
+                Intent newIntent;
+                if (Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)) {
+                    newIntent = new Intent(mContext, FastSearchActivity.class);
+                } else {
+                    newIntent = new Intent(mContext, SearchActivity.class);
+                }
+                newIntent.putExtra("title", vod.name);
+                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mActivity.startActivity(newIntent);
             }
         });
 
-        homeHotVodAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
-                if (ApiConfig.get().getSourceBeanList().isEmpty()) return true;
-                Movie.Video vod = ((Movie.Video) adapter.getItem(position));
-                Bundle bundle = new Bundle();
-                bundle.putString("title", vod.name);
-                jumpActivity(FastSearchActivity.class, bundle);
-                return true;
-            }
+        homeHotVodAdapter.setOnItemLongClickListener((adapter, view, position) -> {
+            if (ApiConfig.get().getSourceBeanList().isEmpty()) return true;
+            Movie.Video vod = ((Movie.Video) adapter.getItem(position));
+            Bundle bundle = new Bundle();
+            bundle.putString("title", vod.name);
+            jumpActivity(FastSearchActivity.class, bundle);
+            return true;
         });
 
         tvHotList1.setOnItemListener(new TvRecyclerView.OnItemListener() {
@@ -244,24 +238,19 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
             OkGo.<String>get(doubanUrl)
                     .headers("User-Agent", UA.randomOne())
                     .execute(new AbsCallback<String>() {
-                @Override
-                public void onSuccess(Response<String> response) {
-                    String netJson = response.body();
-                    Hawk.put("home_hot_day", today);
-                    Hawk.put("home_hot", netJson);
-                    mActivity.runOnUiThread(new Runnable() {
                         @Override
-                        public void run() {
-                            adapter.setNewData(loadHots(netJson));
+                        public void onSuccess(Response<String> response) {
+                            String netJson = response.body();
+                            Hawk.put("home_hot_day", today);
+                            Hawk.put("home_hot", netJson);
+                            mActivity.runOnUiThread(() -> adapter.setNewData(loadHots(netJson)));
+                        }
+
+                        @Override
+                        public String convertResponse(okhttp3.Response response) throws Throwable {
+                            return response.body().string();
                         }
                     });
-                }
-
-                @Override
-                public String convertResponse(okhttp3.Response response) throws Throwable {
-                    return response.body().string();
-                }
-            });
         } catch (Throwable th) {
             th.printStackTrace();
         }
@@ -286,14 +275,11 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
         return result;
     }
 
-    private View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus)
-                v.animate().scaleX(1.05f).scaleY(1.05f).setDuration(300).setInterpolator(new BounceInterpolator()).start();
-            else
-                v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(300).setInterpolator(new BounceInterpolator()).start();
-        }
+    private View.OnFocusChangeListener focusChangeListener = (v, hasFocus) -> {
+        if (hasFocus)
+            v.animate().scaleX(1.05f).scaleY(1.05f).setDuration(300).setInterpolator(new BounceInterpolator()).start();
+        else
+            v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(300).setInterpolator(new BounceInterpolator()).start();
     };
 
     @Override

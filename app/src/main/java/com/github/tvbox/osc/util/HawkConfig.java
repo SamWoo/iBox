@@ -38,4 +38,5 @@ public class HawkConfig {
     public static final String NOW_DATE = "now_date"; //当前日期
     public static final String REMOTE_TVBOX = "remote_tvbox_host";
     public static final String DEFAULT_API = "https://agit.ai/mmmgit/tvbox/raw/branch/main/zzz1.json";
+    public static final String WALLPAPER_API = "https://source.unsplash.com/1280x720/?wallpapers";
 }

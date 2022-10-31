@@ -205,6 +205,7 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomAd
                 // 采样率
                 opts.inSampleSize = scale;
                 globalWp = new BitmapDrawable(BitmapFactory.decodeFile(wp.getAbsolutePath(), opts));
+                globalWp.setAlpha(0xB4);
             } else {
                 globalWp = null;
             }

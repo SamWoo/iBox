@@ -130,17 +130,14 @@ public class PlayFragment extends BaseLazyFragment {
     }
 
     private void initView() {
-        mHandler = new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(@NonNull Message msg) {
-                switch (msg.what) {
-                    case 100:
-                        stopParse();
-                        errorWithRetry("嗅探错误", false);
-                        break;
-                }
-                return false;
+        mHandler = new Handler(msg -> {
+            switch (msg.what) {
+                case 100:
+                    stopParse();
+                    errorWithRetry("嗅探错误", false);
+                    break;
             }
+            return false;
         });
         mVideoView = findViewById(R.id.mVideoView);
         mPlayLoadTip = findViewById(R.id.play_load_tip);
@@ -705,7 +702,7 @@ public class PlayFragment extends BaseLazyFragment {
         int requestedOrientation = getActivity().getRequestedOrientation();
         if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT || requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT || requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT) {
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-            mController.mLandscapePortraitBtn.setText("竖屏");
+            mController.mLandscapePortraitTxt.setText("竖屏");
         }
         if (mController.onBackPressed()) {
             return true;

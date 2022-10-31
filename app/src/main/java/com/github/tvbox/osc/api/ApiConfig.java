@@ -57,7 +57,7 @@ public class ApiConfig {
     private List<String> vipParseFlags;
     private List<IJKCode> ijkCodes;
     private String spider = null;
-    public String wallpaper = "";
+    public String wallpaper = "https://source.unsplash.com/1280x720/?wallpapers";
 
     private SourceBean emptyHome = new SourceBean();
 
