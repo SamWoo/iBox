@@ -149,7 +149,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
             dialog.show();
         });
         findViewById(R.id.llWp).setOnClickListener(v -> {
-            Log.e("Sam", "path----->" + requireActivity().getFilesDir().getAbsolutePath());
+//            Log.e("Sam", "path----->" + requireActivity().getFilesDir().getAbsolutePath());
             FastClickCheckUtil.check(v);
             // modify by Sam at 2022/11/01
             if (!HawkConfig.WALLPAPER_API.isEmpty())

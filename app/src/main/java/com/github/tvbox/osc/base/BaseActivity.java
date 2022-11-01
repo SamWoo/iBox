@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -183,6 +184,7 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomAd
             getWindow().setBackgroundDrawable(globalWp);
         try {
             File wp = new File(getFilesDir().getAbsolutePath() + "/wp");
+//            Log.e("Sam", "path=====----->" + getFilesDir().getAbsolutePath());
             if (wp.exists()) {
                 BitmapFactory.Options opts = new BitmapFactory.Options();
                 opts.inJustDecodeBounds = true;
@@ -205,7 +207,8 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomAd
                 // 采样率
                 opts.inSampleSize = scale;
                 globalWp = new BitmapDrawable(BitmapFactory.decodeFile(wp.getAbsolutePath(), opts));
-                globalWp.setAlpha(0xB4);
+                // 设置背景图片透明度  add by sam at 2022/11/01
+                globalWp.getPaint().setAlpha(0x80);
             } else {
                 globalWp = null;
             }
